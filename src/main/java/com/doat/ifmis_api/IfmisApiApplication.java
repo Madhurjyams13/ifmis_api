@@ -9,7 +9,7 @@ public class IfmisApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(IfmisApiApplication.class, args);
 
-		System.out.println("Application start test 123");
+		System.out.println("Application started");
 	}
 
 }
