@@ -1,20 +1,28 @@
 package com.doat.ifmis_api.controller;
 
 import com.doat.ifmis_api.model.DdoModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.doat.ifmis_api.service.DdoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/ddo")
+@RequestMapping("ddo")
 public class DdoController {
 
-    @GetMapping("/getDetails")
-    public DdoModel getDdoDetails(@RequestParam String ddoCode) {
+    @Autowired
+    DdoService ddoService;
 
-        DdoModel ddoModel =new DdoModel(null,"Haao Ki HAAAAAAAAAAAAAAA");
+    @GetMapping("getDetails/{treasuryCode}/{ddoCode}/{ddoNo}")
+    public DdoModel getDdoDetails(@PathVariable String treasuryCode,
+                                  @PathVariable String ddoCode,
+                                  @PathVariable String ddoNo
 
-        return ddoModel;
+    ) {
+
+        String ddoCodeFormatted = treasuryCode+"/"+ddoCode+"/"+ddoNo;
+
+        System.out.println(ddoCodeFormatted);
+
+        return ddoService.getDdoDetails(ddoCodeFormatted);
     }
 }

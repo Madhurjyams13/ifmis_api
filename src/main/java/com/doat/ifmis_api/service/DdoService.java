@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface DdoService  {
 
-    DdoModel getDdoDetails();
+    DdoModel getDdoDetails(String ddoCode);
 }
