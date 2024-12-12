@@ -4,7 +4,7 @@ import com.doat.ifmis_api.model.DdoModel;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface DdoService  {
+public interface DdoService {
 
     DdoModel getDdoDetails(String ddoCode);
 }

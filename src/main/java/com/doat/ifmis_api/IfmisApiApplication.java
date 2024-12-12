@@ -6,10 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class IfmisApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(IfmisApiApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(IfmisApiApplication.class, args);
 
-		System.out.println("Application started");
-	}
+        System.out.println("Application started");
+
+    }
 
 }

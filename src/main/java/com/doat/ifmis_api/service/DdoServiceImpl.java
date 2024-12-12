@@ -45,18 +45,18 @@ public class DdoServiceImpl implements DdoService {
                 "WHERE\n" +
                 "    hs.category = 'S'\n" +
                 "    AND sua.active_Status = 'Y'\n" +
-                "    AND hs.hierarchy_Code = '"+ddoCode+"'";
+                "    AND hs.hierarchy_Code = '" + ddoCode + "'";
 
         Query query = em.createNativeQuery(queryString);
 
-        List<Object[]> ddoObjectList= query.getResultList();
+        List<Object[]> ddoObjectList = query.getResultList();
 
-        if (ddoObjectList.size()>=1) {
+        if (ddoObjectList.size() >= 1) {
 
             Object rows[] = ddoObjectList.get(0);
             //System.out.println(String.valueOf(rows[0]));
 
-            DdoModel ddoModel =new  DdoModel(String.valueOf(rows[0]),
+            DdoModel ddoModel = new DdoModel(String.valueOf(rows[0]),
                     String.valueOf(rows[1]),
                     String.valueOf(rows[2]),
                     String.valueOf(rows[3]),
