@@ -1,11 +1,13 @@
 package com.doat.ifmis_api.service;
 
 import com.doat.ifmis_api.model.DdoModel;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.List;
 
 @Service
@@ -13,6 +15,8 @@ public class DdoServiceImpl implements DdoService {
 
     @Autowired
     private EntityManager em;
+
+    private static final Logger logger = LogManager.getLogger(DdoServiceImpl.class);
 
     @Override
     public DdoModel getDdoDetails(String ddoCode) {
@@ -54,7 +58,6 @@ public class DdoServiceImpl implements DdoService {
         if (ddoObjectList.size() >= 1) {
 
             Object rows[] = ddoObjectList.get(0);
-            //System.out.println(String.valueOf(rows[0]));
 
             DdoModel ddoModel = new DdoModel(String.valueOf(rows[0]),
                     String.valueOf(rows[1]),
@@ -67,7 +70,7 @@ public class DdoServiceImpl implements DdoService {
                     String.valueOf(rows[8]),
                     String.valueOf(rows[9]));
 
-            System.out.println(ddoModel.toString());
+            logger.debug("DB Response == {} ", ddoModel.toString());
 
             return ddoModel;
         }
