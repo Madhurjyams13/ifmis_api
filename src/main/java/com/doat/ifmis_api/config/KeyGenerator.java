@@ -37,7 +37,7 @@ public class KeyGenerator implements ApplicationRunner {
             Path directory = Paths.get(KEY_FILE_PATH).getParent();
 
             if(!Files.exists(directory)) {
-                System.out.println("SecureApi Directory Doesn't exists -- Creating Directory");
+                System.out.println("SecureApi Directory "+System.getProperty("user.home")+" Doesn't exists -- Creating Directory");
 
                 Files.createDirectories(directory);
 
@@ -58,7 +58,7 @@ public class KeyGenerator implements ApplicationRunner {
             else
             {
                 if (!Files.exists(path)) {
-                    System.out.println("Directory Exists - Secret File Doesn't -- Creating key File");
+                    System.out.println("Directory "+System.getProperty("user.home")+" Exists - Secret File Doesn't -- Creating key File");
 
                     try (PrintWriter writer = new PrintWriter(KEY_FILE_PATH)) {
 
