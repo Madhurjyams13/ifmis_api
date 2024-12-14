@@ -3,17 +3,17 @@ package com.doat.ifmis_api.service;
 import com.doat.ifmis_api.model.DdoModel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class DdoServiceImpl implements DdoService {
 
-    @Autowired
     private EntityManager em;
 
     private static final Logger logger = LogManager.getLogger(DdoServiceImpl.class);

@@ -18,7 +18,6 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    //private static final String EXPECTED_SECRET_KEY = "abc";
     private static final String EXPECTED_SECRET_KEY = KeyGenerator.getSecretKeyRead();
 
     @Override

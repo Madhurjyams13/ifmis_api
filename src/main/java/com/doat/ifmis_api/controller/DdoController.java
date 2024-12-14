@@ -1,18 +1,24 @@
 package com.doat.ifmis_api.controller;
 
-import com.doat.ifmis_api.model.DdoModel;
+import com.doat.ifmis_api.service.CommonService;
 import com.doat.ifmis_api.service.DdoService;
+import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("ddo")
 public class DdoController {
 
-    @Autowired
     DdoService ddoService;
+
+    CommonService service;
 
     private static final Logger logger = LogManager.getLogger(DdoController.class);
 
@@ -25,12 +31,44 @@ public class DdoController {
     }
 
     @PostMapping("getDetails")
-    public DdoModel getDdoDetails(@RequestBody String ddoCode) {
+    public ResponseEntity<HashMap<String, Object>> getDdoDetails(@RequestParam String ddoCode) {
 
         logger.info("/ddo/getDetails == ddoCode Received == {}", ddoCode);
 
-        return ddoService.getDdoDetails(ddoCode);
-    }
+        if(ddoCode==null || ddoCode.equals(""))
+        {
+            return new ResponseEntity<>
+                    (
+                            service.getResponseEntity(
+                                    "OK",
+                                    null,
+                                    "DDO Code Not Provided"
+                            ),
+                            HttpStatus.OK
+                    ) ;
+        }
+        else if (ddoService.getDdoDetails(ddoCode)==null)
+        {
+            return new ResponseEntity<>
+                    (
+                            service.getResponseEntity(
+                                    "OK",
+                                    null,
+                                    "DDO Details Not Found"
+                            ),
+                            HttpStatus.OK
+                    );
+        }
 
+        return new ResponseEntity<>
+                (
+                        service.getResponseEntity(
+                                "OK",
+                                ddoService.getDdoDetails(ddoCode),
+                                "Details Found"
+                        ),
+                        HttpStatus.OK
+                ) ;
+    }
 
 }
