@@ -16,59 +16,47 @@ import java.util.HashMap;
 @RequestMapping("ddo")
 public class DdoController {
 
-    DdoService ddoService;
-
-    CommonService service;
+    private final DdoService ddoService;
+    private final CommonService service;
 
     private static final Logger logger = LogManager.getLogger(DdoController.class);
 
     @GetMapping("test")
     public String ddoTest() {
-
         logger.info("/ddo/test");
-
         return "Controller Hit Testing";
     }
 
     @PostMapping("getDetails")
     public ResponseEntity<HashMap<String, Object>> getDdoDetails(@RequestParam String ddoCode) {
-
         logger.info("/ddo/getDetails == ddoCode Received == {}", ddoCode);
-
-        if(ddoCode==null || ddoCode.equals(""))
-        {
-            return new ResponseEntity<>
-                    (
-                            service.getResponseEntity(
-                                    "OK",
-                                    null,
-                                    "DDO Code Not Provided"
-                            ),
-                            HttpStatus.OK
-                    ) ;
-        }
-        else if (ddoService.getDdoDetails(ddoCode)==null)
-        {
-            return new ResponseEntity<>
-                    (
-                            service.getResponseEntity(
-                                    "OK",
-                                    null,
-                                    "DDO Details Not Found"
-                            ),
-                            HttpStatus.OK
-                    );
-        }
-
-        return new ResponseEntity<>
+        if(ddoCode==null || ddoCode.isEmpty()) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
-                                ddoService.getDdoDetails(ddoCode),
-                                "Details Found"
+                                null,
+                                "DDO Code Not Provided"
                         ),
                         HttpStatus.OK
-                ) ;
+                );
+        else if (ddoService.getDdoDetails(ddoCode)==null) return new ResponseEntity<>
+                (
+                        service.getResponseEntity(
+                                "OK",
+                                null,
+                                "DDO Details Not Found"
+                        ),
+                        HttpStatus.OK
+                );
+        else return new ResponseEntity<>
+            (
+                    service.getResponseEntity(
+                            "OK",
+                            ddoService.getDdoDetails(ddoCode),
+                            "Details Found"
+                    ),
+                    HttpStatus.OK
+            );
     }
 
 }

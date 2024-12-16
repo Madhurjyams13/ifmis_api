@@ -55,26 +55,27 @@ public class DdoServiceImpl implements DdoService {
 
         List<Object[]> ddoObjectList = query.getResultList();
 
-        if (ddoObjectList.size() >= 1) {
-
-            Object rows[] = ddoObjectList.get(0);
-
-            DdoModel ddoModel = new DdoModel(String.valueOf(rows[0]),
-                    String.valueOf(rows[1]),
-                    String.valueOf(rows[2]),
-                    String.valueOf(rows[3]),
-                    String.valueOf(rows[4]),
-                    String.valueOf(rows[5]),
-                    String.valueOf(rows[6]),
-                    String.valueOf(rows[7]),
-                    String.valueOf(rows[8]),
-                    String.valueOf(rows[9]));
-
-            logger.debug("DB Response == {} ", ddoModel.toString());
-
+        if (!ddoObjectList.isEmpty()) {
+            DdoModel ddoModel = getDdoModel(ddoObjectList);
+            logger.debug("DB Response == {} ", ddoModel);
             return ddoModel;
         }
 
         return null;
+    }
+
+    private static DdoModel getDdoModel(List<Object[]> ddoObjectList) {
+        Object[] rows = ddoObjectList.get(0);
+
+        return new DdoModel(String.valueOf(rows[0]),
+                String.valueOf(rows[1]),
+                String.valueOf(rows[2]),
+                String.valueOf(rows[3]),
+                String.valueOf(rows[4]),
+                String.valueOf(rows[5]),
+                String.valueOf(rows[6]),
+                String.valueOf(rows[7]),
+                String.valueOf(rows[8]),
+                String.valueOf(rows[9]));
     }
 }
