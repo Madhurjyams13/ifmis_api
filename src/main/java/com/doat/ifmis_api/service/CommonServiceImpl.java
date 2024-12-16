@@ -8,14 +8,12 @@ import java.util.HashMap;
 public class CommonServiceImpl implements CommonService {
     @Override
     public HashMap<String, Object> getResponseEntity(String status, Object data, String message) {
-
-        HashMap<String, Object> response = new HashMap<String, Object>();
+        HashMap<String, Object> response = new HashMap<>();
 
         response.put("status", status);
         response.put("data", data);
         response.put("message", message);
 
         return response;
-
     }
 }

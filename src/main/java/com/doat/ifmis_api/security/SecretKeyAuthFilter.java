@@ -26,15 +26,6 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        /*
-        // Skip authentication for non-API endpoints if needed
-        if (!request.getRequestURI().contains("/api/")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        */
-
-
         String authHeader = request.getHeader(AUTHORIZATION_HEADER);
 
         // Check if Authorization header is present and matches the expected secret key
