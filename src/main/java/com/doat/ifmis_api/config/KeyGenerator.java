@@ -20,8 +20,6 @@ public class KeyGenerator implements ApplicationRunner {
     private static final String BASE_LOC_NAME = "user.home";
     private static final String KEY_FILE_PATH = System.getProperty(BASE_LOC_NAME) + "/.secureapi/secret.key";
 
-    static String secretKeyRead;
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
