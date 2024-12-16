@@ -18,7 +18,6 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    //private static final String EXPECTED_SECRET_KEY = "abc";
     private static final String EXPECTED_SECRET_KEY = KeyGenerator.getSecretKeyRead();
 
     @Override
@@ -26,15 +25,6 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-
-        /*
-        // Skip authentication for non-API endpoints if needed
-        if (!request.getRequestURI().contains("/api/")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        */
-
 
         String authHeader = request.getHeader(AUTHORIZATION_HEADER);
 
