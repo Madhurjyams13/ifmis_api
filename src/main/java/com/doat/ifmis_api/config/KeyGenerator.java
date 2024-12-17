@@ -80,17 +80,4 @@ public class KeyGenerator implements ApplicationRunner {
 
     }
 
-    public static String getSecretKeyRead() {
-
-        Path path = Paths.get(KEY_FILE_PATH);
-        try {
-            return new String(Files.readAllBytes(path));
-        }
-        catch(IOException e)
-        {
-            logger.warn("Exception Occurred with {}", e.getMessage());
-            return null;
-        }
-
-    }
 }
