@@ -1,5 +1,6 @@
 package com.doat.ifmis_api.controller;
 
+import com.doat.ifmis_api.model.DdoModel;
 import com.doat.ifmis_api.service.CommonService;
 import com.doat.ifmis_api.service.DdoService;
 import lombok.AllArgsConstructor;
@@ -28,9 +29,9 @@ public class DdoController {
     }
 
     @PostMapping("getDetails")
-    public ResponseEntity<HashMap<String, Object>> getDdoDetails(@RequestParam String ddoCode) {
-        logger.info("/ddo/getDetails == ddoCode Received == {}", ddoCode);
-        if(ddoCode==null || ddoCode.isEmpty()) return new ResponseEntity<>
+    public ResponseEntity<HashMap<String, Object>> getDdoDetails(@RequestBody DdoModel request) {
+        logger.info("/ddo/getDetails == ddoCode Received == {}", request.ddoCode());
+        if(request.ddoCode()==null || request.ddoCode().isEmpty()) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -39,7 +40,7 @@ public class DdoController {
                         ),
                         HttpStatus.OK
                 );
-        else if (ddoService.getDdoDetails(ddoCode)==null) return new ResponseEntity<>
+        else if (ddoService.getDdoDetails(request.ddoCode())==null) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -52,7 +53,7 @@ public class DdoController {
             (
                     service.getResponseEntity(
                             "OK",
-                            ddoService.getDdoDetails(ddoCode),
+                            ddoService.getDdoDetails(request.ddoCode()),
                             "Details Found"
                     ),
                     HttpStatus.OK
