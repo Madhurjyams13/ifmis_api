@@ -65,7 +65,6 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
 
         Path path = Paths.get(KEY_FILE_PATH);
         try {
-            System.out.println(KEY_FILE_PATH);
             return new String(Files.readAllBytes(path));
         }
         catch(IOException e)
