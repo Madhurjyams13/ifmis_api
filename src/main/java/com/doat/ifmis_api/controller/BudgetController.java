@@ -107,8 +107,8 @@ public class BudgetController {
                                 1,
                                 1,
                                 1,
-                                1.00,
-                                1.00,
+                                10.00,
+                                10.00,
                                 "desc1",
                                 "filePath1"
 
@@ -130,8 +130,8 @@ public class BudgetController {
                                 2,
                                 2,
                                 2,
-                                2.00,
-                                2.00,
+                                20.00,
+                                20.00,
                                 "desc2",
                                 "filePath2"
 
