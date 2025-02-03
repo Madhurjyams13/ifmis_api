@@ -3,12 +3,16 @@ package com.doat.ifmis_api.model;
 import java.util.Date;
 
 public record AdministrativeApproval(
+        String deptCode,
         String aaType,
         String fundingAgency,
         String sanctionYear,
         String startYear,
         String aaRefNo,
-        Date aaDate,
+        String aaDate,
+        String fromDate,
+        String toDate,
+        String finYear,
         String hoa,
         String aaName,
         Integer cca,
