@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @RestController
 @AllArgsConstructor
@@ -28,8 +31,8 @@ public class BudgetController {
         logger.info("trying to get AA details");
 
         String deptCode = aa.deptCode() == null ? null: aa.deptCode();
-        String toDate = aa.fromDate() == null ? null: aa.fromDate();
-        String fromDate = aa.toDate() == null ? null: aa.toDate();
+        String fromDate = aa.fromDate() == null ? null: aa.fromDate();
+        String toDate = aa.toDate() == null ? null: aa.toDate();
         String finYear =aa.finYear() == null ? null: aa.finYear();
 
         if (deptCode == null || toDate == null || fromDate == null || finYear == null) {
@@ -43,67 +46,182 @@ public class BudgetController {
                             HttpStatus.BAD_REQUEST
                     );
         } else {
-            String dateFormat = "yyyy-MM-dd";
-            String finYearFormat = "xxxx-yyyy";
-            //Dummy data
-            AdministrativeApproval aa1 = new AdministrativeApproval(
-                    "dC1",
-                    "type1",
-                    "fundingAgency1",
-                    "xxxx-yyyy",
-                    "xxxx-yyyy",
-                    "refNo1",
-                    "yyyy-mm-dd",
-                    "yyyy-mm-dd",
-                    "yyyy-mm-dd",
-                    "xxxx-yyyy",
-                    "hoa",
-                    "aaName1",
-                    1,
-                    1,
-                    1,
-                    1,
-                    1.00,
-                    1.00,
-                    "desc1",
-                    "filePath1"
+            switch (validateDateFormat(fromDate, toDate)) {
+                case 0 :
+                    return new ResponseEntity<>
+                            (
+                                    service.getResponseEntity(
+                                            "Error",
+                                            null,
+                                            "Exception occurred"
+                                    ),
+                                    HttpStatus.BAD_REQUEST
+                            );
+                case 1 :
+                    return new ResponseEntity<>
+                            (
+                                    service.getResponseEntity(
+                                            "Error",
+                                            null,
+                                            "Please provide from date in correct format"
+                                    ),
+                                    HttpStatus.BAD_REQUEST
+                            );
+                case 2 :
+                    return new ResponseEntity<>
+                            (
+                                    service.getResponseEntity(
+                                            "Error",
+                                            null,
+                                            "Please provide to date in correct format"
+                                    ),
+                                    HttpStatus.BAD_REQUEST
+                            );
+                case 3 :
+                    return new ResponseEntity<>
+                            (
+                                    service.getResponseEntity(
+                                            "Error",
+                                            null,
+                                            "To date cannot be before from date"
+                                    ),
+                                    HttpStatus.BAD_REQUEST
+                            );
+                case 4 :
+                    if (finYear(finYear)) {
+                        //Dummy data
+                        AdministrativeApproval aa1 = new AdministrativeApproval(
+                                "dC1",
+                                "type1",
+                                "fundingAgency1",
+                                "xxxx-yyyy",
+                                "xxxx-yyyy",
+                                "refNo1",
+                                "yyyy-mm-dd",
+                                "yyyy-mm-dd",
+                                "yyyy-mm-dd",
+                                "xxxx-yyyy",
+                                "hoa",
+                                "aaName1",
+                                1,
+                                1,
+                                1,
+                                1,
+                                1.00,
+                                1.00,
+                                "desc1",
+                                "filePath1"
 
-            );
-            AdministrativeApproval aa2 = new AdministrativeApproval(
-                    "dC2",
-                    "type2",
-                    "fundingAgency2",
-                    "xxxx-yyyy",
-                    "xxxx-yyyy",
-                    "refNo2",
-                    "yyyy-mm-dd",
-                    "yyyy-mm-dd",
-                    "yyyy-mm-dd",
-                    "xxxx-yyyy",
-                    "hoa",
-                    "aaName2",
-                    2,
-                    2,
-                    2,
-                    2,
-                    2.00,
-                    2.00,
-                    "desc2",
-                    "filePath2"
+                        );
+                        AdministrativeApproval aa2 = new AdministrativeApproval(
+                                "dC2",
+                                "type2",
+                                "fundingAgency2",
+                                "xxxx-yyyy",
+                                "xxxx-yyyy",
+                                "refNo2",
+                                "yyyy-mm-dd",
+                                "yyyy-mm-dd",
+                                "yyyy-mm-dd",
+                                "xxxx-yyyy",
+                                "hoa",
+                                "aaName2",
+                                2,
+                                2,
+                                2,
+                                2,
+                                2.00,
+                                2.00,
+                                "desc2",
+                                "filePath2"
 
-            );
-            //Dummy data end
+                        );
+                        //Dummy data end
 
-            List<AdministrativeApproval> aaList = Arrays.asList(aa1, aa2);
-            return new ResponseEntity<>
-                    (
-                            service.getResponseEntity(
-                                    "OK",
-                                    aaList,
-                                    "AA Details found"
-                            ),
-                            HttpStatus.OK
-                    );
+                        List<AdministrativeApproval> aaList = Arrays.asList(aa1, aa2);
+                        return new ResponseEntity<>
+                                (
+                                        service.getResponseEntity(
+                                                "OK",
+                                                aaList,
+                                                "AA Details found"
+                                        ),
+                                        HttpStatus.OK
+                                );
+                    } else {
+                        return new ResponseEntity<>
+                                (
+                                        service.getResponseEntity(
+                                                "Error",
+                                                null,
+                                                "Please provide a valid financial year"
+                                        ),
+                                        HttpStatus.BAD_REQUEST
+                                );
+                    }
+                default:
+                    return new ResponseEntity<>
+                            (
+                                    service.getResponseEntity(
+                                            "error",
+                                            null,
+                                            "Something went wrong. Please contact administrator"
+                                    ),
+                                    HttpStatus.BAD_REQUEST
+                            );
+            }
         }
+    }
+
+    public static Integer validateDateFormat(String fromDateStr, String toDateStr) {
+        // 0 == exception
+        // 1 == wrong fromDate
+        // 2 == wrong toDate
+        // 3 == toDate before fromDate
+        // 4 == validation passed
+        System.out.println("From date " + fromDateStr);
+        String expectedFormat = "yyyy-MM-dd";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat);
+        dateFormat.setLenient(false); // Strictly enforce the format
+
+        try {
+            if (isValidDateFormat(fromDateStr, expectedFormat)) {
+                if (isValidDateFormat(toDateStr, expectedFormat)) {
+                    Date fromDate = dateFormat.parse(fromDateStr);
+                    Date toDate = dateFormat.parse(toDateStr);
+
+                    if (toDate.before(fromDate)) {
+                        return 3;
+                    } else return 4;
+                } else return 2;
+            } else return 1;
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    private static boolean isValidDateFormat(String dateStr, String expectedFormat) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat);
+        dateFormat.setLenient(false);
+
+        try {
+            dateFormat.parse(dateStr);
+
+            return Pattern.matches("\\d{4}-\\d{2}-\\d{2}", dateStr);
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    public static Boolean finYear(String financialYear) {
+        if (!Pattern.matches("\\d{4}-\\d{4}", financialYear)) {
+            return false;
+        }
+
+        String[] years = financialYear.split("-");
+        int startYear = Integer.parseInt(years[0]);
+        int endYear = Integer.parseInt(years[1]);
+
+        return endYear == startYear + 1;
     }
 }
