@@ -173,13 +173,13 @@ public class BudgetController {
         }
     }
 
+    // Validation to check if dates are in correct format, if to-date is before from-date and if financial year is valid
     public static Integer validateDateFormat(String fromDateStr, String toDateStr) {
         // 0 == exception
         // 1 == wrong fromDate
         // 2 == wrong toDate
         // 3 == toDate before fromDate
         // 4 == validation passed
-        System.out.println("From date " + fromDateStr);
         String expectedFormat = "yyyy-MM-dd";
         SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat);
         dateFormat.setLenient(false); // Strictly enforce the format
