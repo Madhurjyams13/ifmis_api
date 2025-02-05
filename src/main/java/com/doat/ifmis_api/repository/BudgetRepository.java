@@ -22,7 +22,7 @@ public class BudgetRepository {
 
     public List<AdministrativeApproval> getAADetails(String deptCode, String fy, String fromDate, String toDate) {
 
-        String queryString = queryService.getAADetaisls(deptCode,fy,fromDate,toDate);
+        String queryString = queryService.getAADetaisls(deptCode, fy, fromDate, toDate);
         Query query = em.createNativeQuery(queryString);
 
         query.setParameter("deptCode", deptCode);
@@ -41,7 +41,7 @@ public class BudgetRepository {
     private AdministrativeApproval mapToAAModel(Object[] data, String fromDate, String toDate) {
 
 
-        return  AdministrativeApproval.builder()
+        return AdministrativeApproval.builder()
                 .deptCode(data[0] == null ? "" : data[0].toString())
                 .aaType(data[1] == null ? "" : data[1].toString())
                 .scheme(data[2] == null ? "" : data[2].toString())

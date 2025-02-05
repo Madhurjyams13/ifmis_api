@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @RestController
 @AllArgsConstructor
@@ -30,58 +26,6 @@ public class BudgetController {
     private final CommonService service;
     private final BudgetService budgetService;
     private final ValidationService validationService;
-
-    // Validation to check if dates are in correct format, if to-date is before from-date and if financial year is valid
-    public static Integer validateDateFormat(String fromDateStr, String toDateStr) {
-        // 0 == exception
-        // 1 == wrong fromDate
-        // 2 == wrong toDate
-        // 3 == toDate before fromDate
-        // 4 == validation passed
-        String expectedFormat = "yyyy-MM-dd";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat);
-        dateFormat.setLenient(false); // Strictly enforce the format
-
-        try {
-            if (isValidDateFormat(fromDateStr, expectedFormat)) {
-                if (isValidDateFormat(toDateStr, expectedFormat)) {
-                    Date fromDate = dateFormat.parse(fromDateStr);
-                    Date toDate = dateFormat.parse(toDateStr);
-
-                    if (toDate.before(fromDate)) {
-                        return 3;
-                    } else return 4;
-                } else return 2;
-            } else return 1;
-        } catch (ParseException e) {
-            return 0;
-        }
-    }
-
-    private static boolean isValidDateFormat(String dateStr, String expectedFormat) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(expectedFormat);
-        dateFormat.setLenient(false);
-
-        try {
-            dateFormat.parse(dateStr);
-
-            return Pattern.matches("\\d{4}-\\d{2}-\\d{2}", dateStr);
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    public static Boolean finYear(String financialYear) {
-        if (!Pattern.matches("\\d{4}-\\d{4}", financialYear)) {
-            return false;
-        }
-
-        String[] years = financialYear.split("-");
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
-
-        return endYear == startYear + 1;
-    }
 
     @PostMapping("getAADetails")
     public ResponseEntity<HashMap<String, Object>> getAADetails(@RequestBody AdministrativeApproval aa) {
@@ -109,14 +53,14 @@ public class BudgetController {
                 if (validationService.validateDateFormat(toDate)) {
                     if (validationService.validateFinYearFormat(finYear)) {
                         if (!validationService.validateFromAndToDate(fromDate, toDate)) {
-                            List<AdministrativeApproval> aaList = budgetService.getAADetails(deptCode,finYear,fromDate,toDate);
+                            List<AdministrativeApproval> aaList = budgetService.getAADetails(deptCode, finYear, fromDate, toDate);
 
-                            if(aaList.isEmpty())
+                            if (aaList.isEmpty())
                                 return new ResponseEntity<>
                                         (
                                                 service.getResponseEntity(
                                                         "OK",
-                                                        budgetService.getAADetails(deptCode,finYear,fromDate,toDate),
+                                                        budgetService.getAADetails(deptCode, finYear, fromDate, toDate),
                                                         "AA Details Not found"
                                                 ),
                                                 HttpStatus.OK
@@ -125,7 +69,7 @@ public class BudgetController {
                                     (
                                             service.getResponseEntity(
                                                     "OK",
-                                                    budgetService.getAADetails(deptCode,finYear,fromDate,toDate),
+                                                    budgetService.getAADetails(deptCode, finYear, fromDate, toDate),
                                                     "AA Details found"
                                             ),
                                             HttpStatus.OK

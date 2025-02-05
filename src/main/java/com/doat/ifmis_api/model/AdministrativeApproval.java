@@ -48,8 +48,8 @@ public record AdministrativeApproval(
         }
 
         public AdministrativeApproval.Builder scheme(String scheme) {
-        this.scheme = scheme;
-        return this;
+            this.scheme = scheme;
+            return this;
         }
 
         public AdministrativeApproval.Builder aaRefNo(String aaRefNo) {

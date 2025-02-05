@@ -30,6 +30,6 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public String getAADetaisls(String deptCode, String fy, String fromDate, String toDate) {
-        return  QueryConstants.AA_DETAILS_QUERY ;
+        return QueryConstants.AA_DETAILS_QUERY;
     }
 }

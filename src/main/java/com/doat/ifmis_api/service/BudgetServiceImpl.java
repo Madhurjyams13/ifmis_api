@@ -16,7 +16,7 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public List<AdministrativeApproval> getAADetails(String deptCode, String fy, String fromDate, String toDate) {
 
-        return budgetRepository.getAADetails(deptCode,fy,fromDate,toDate);
+        return budgetRepository.getAADetails(deptCode, fy, fromDate, toDate);
 
 
     }
