@@ -12,6 +12,7 @@ public record AdministrativeApproval(
         String hoa,
         String aaName,
         Double amount,
+        Double headAmount,
         String desc,
         String filePath
 ) {

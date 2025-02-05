@@ -157,6 +157,7 @@ public class BudgetController {
                                 "hoa",
                                 "aaName1",
                                 10.00,
+                                100.00,
                                 "desc1",
                                 "filePath1"
 
@@ -173,6 +174,7 @@ public class BudgetController {
                                 "hoa",
                                 "aaName2",
                                 20.00,
+                                200.00,
                                 "desc2",
                                 "filePath2"
 
