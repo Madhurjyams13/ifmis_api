@@ -28,6 +28,18 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
     private static final String BASE_LOC_NAME = "user.home";
     private static final String KEY_FILE_PATH = System.getProperty(BASE_LOC_NAME) + "/.secureapi/secret.key";
 
+    public static String getSecretKeyRead() {
+
+        Path path = Paths.get(KEY_FILE_PATH);
+        try {
+            return new String(Files.readAllBytes(path));
+        } catch (IOException e) {
+            logger.warn("Exception Occurred with {}", e.getMessage());
+            return null;
+        }
+
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -59,19 +71,5 @@ public class SecretKeyAuthFilter extends OncePerRequestFilter {
 
         // Continue with the filter chain
         filterChain.doFilter(request, response);
-    }
-
-        public static String getSecretKeyRead() {
-
-        Path path = Paths.get(KEY_FILE_PATH);
-        try {
-            return new String(Files.readAllBytes(path));
-        }
-        catch(IOException e)
-        {
-            logger.warn("Exception Occurred with {}", e.getMessage());
-            return null;
-        }
-
     }
 }
