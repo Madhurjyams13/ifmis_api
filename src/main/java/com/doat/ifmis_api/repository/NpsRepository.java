@@ -46,7 +46,7 @@ public class NpsRepository {
         }
     }
 
-    public Optional<NpsContribution> getConDetails(String ppan) {
+    public List<NpsContribution> getConDetails(String ppan) {
 
         try {
             String queryString = queryService.getNpsConDetails(ppan);
@@ -57,8 +57,7 @@ public class NpsRepository {
             List<Object[]> npsObjectList = query.getResultList();
 
             return npsObjectList.stream()
-                    .findFirst()
-                    .map(this::mapToNpsConModel);
+                    .map(this::mapToNpsConModel).toList();
 
         } catch (PersistenceException e) {
             logger.error("Database error while fetching NPS Contribution details for code: {}", ppan, e);

@@ -8,7 +8,7 @@ public record AdministrativeApproval(
         String aaDate,
         String fromDate,
         String toDate,
-        String financialYear,
+        String finYear,
         String hoa,
         String aaName,
         Double amount,
@@ -43,7 +43,7 @@ public record AdministrativeApproval(
         }
 
         public AdministrativeApproval.Builder aaType(String aaType) {
-            this.aaType = Builder.this.aaType;
+            this.aaType = aaType;
             return this;
         }
 

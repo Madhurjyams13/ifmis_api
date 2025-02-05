@@ -27,4 +27,9 @@ public class QueryServiceImpl implements QueryService {
     public String getNpsConDetails(String ppan) {
         return QueryConstants.NPS_CON_DETAILS_QUERY;
     }
+
+    @Override
+    public String getAADetaisls(String deptCode, String fy, String fromDate, String toDate) {
+        return  QueryConstants.AA_DETAILS_QUERY ;
+    }
 }

@@ -75,7 +75,7 @@ public class NpsController {
                         HttpStatus.OK
                 );
 
-        else if (npsService.getConDetails(request.ppan()) == null) return new ResponseEntity<>
+        else if (npsService.getConDetails(request.ppan()).isEmpty()) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",

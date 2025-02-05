@@ -24,8 +24,6 @@ public class NpsServiceImpl implements NpsService {
 
     @Override
     public List<NpsContribution> getConDetails(String ppan) {
-        return npsRepository.getConDetails(ppan)
-                .map(Collections::singletonList)
-                .orElse(null);
+        return npsRepository.getConDetails(ppan);
     }
 }

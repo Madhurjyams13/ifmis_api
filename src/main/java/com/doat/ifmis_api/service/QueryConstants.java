@@ -165,6 +165,62 @@ public final class QueryConstants {
             ORDER BY 6, 7
             """;
 
+    public static final String AA_DETAILS_QUERY = """
+                SELECT dep.hierarchy_Code,
+                case\s
+                	when aa.parent_id IS NULL\s
+                		then 'Original'
+                	when aa.aa_type IS NOT NULL\s
+                		then 'Revision'
+                	when aa.aa_type IS NULL\s
+                		then 'Revalidation'	
+                	ELSE 'Other'
+                END AS aa_type ,\s
+                case\s
+                	when h.plan_status_migration IS NOT NULL \s
+                		then h.plan_status_migration
+                	when pc.abbreviation IS NOT NULL\s
+                		then pc.abbreviation
+                	ELSE 'EE'
+                END AS scheme,
+                aa.aa_issue_no,\s
+                date(aa.approved_on),
+                CONCAT(
+                	h.head,'-',
+                	case\s
+                	when h.plan_status_migration IS NOT NULL \s
+                		then h.plan_status_migration
+                	when pc.abbreviation IS NOT NULL\s
+                		then pc.abbreviation
+                	ELSE 'EE'
+                	END, '-',
+                	h.ga_ssa_status,'-', h.voted_charged_status) head,
+                CONCAT(SUBSTR(aa.fin_year,1,5),'20',SUBSTR(aa.fin_year,6,8)) finYear,
+                aa.project_name,
+                aa.amount,
+                ah.amount head_amount,
+                aa.project_aim,\s
+                'filePath'
+                #,h.*
+                #aa.*\s
+                FROM probityfinancials.administrative_approval aa
+                LEFT JOIN probityfinancials.administrative_approval_heads ah
+                	ON aa.approval_id = ah.approval_id
+                LEFT JOIN probityfinancials.heads h
+                	ON ah.head_id = h.head_id \s
+                JOIN pfmaster.hierarchy_setup dep
+                	ON aa.dept_id = dep.hierarchy_Id
+                	AND dep.category = 'D'
+                LEFT JOIN probityfinancials.plan_category_head_mapping pchm
+                	ON h.head_id = pchm.head_id
+                LEFT JOIN probityfinancials.plan_category pc\s
+                	ON pchm.pc_id = pc.pc_id
+                WHERE
+                dep.hierarchy_Code = :deptCode
+                AND DATE(aa.approved_on) BETWEEN :fromDate AND :toDate
+                AND CONCAT(SUBSTR(aa.fin_year,1,5),'20',SUBSTR(aa.fin_year,6,8)) = :fy
+            """;
+
     private QueryConstants() {
     }
 }

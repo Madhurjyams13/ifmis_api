@@ -8,5 +8,7 @@ public interface QueryService {
 
     String getNpsConDetails(String ppan);
 
+    String getAADetaisls(String deptCode, String fy, String fromDate, String toDate);
+
 }
 
