@@ -8,7 +8,7 @@ WORKDIR /home/$LINUX_USERNAME
 USER $LINUX_USERNAME
 COPY src src
 COPY pom.xml pom.xml
-RUN mvn clean install -DskipTests
+RUN mvn clean package -DskipTests
 EXPOSE 8081
 RUN touch app.log
 ENTRYPOINT ["sh", "-c", "java -jar target/ifmis_api.jar >> ./app.log 2>&1"]

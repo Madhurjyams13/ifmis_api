@@ -54,7 +54,7 @@ public class NpsController {
                             service.getResponseEntity(
                                     "OK",
                                     npsService.getEmpDetails(request.ppan()),
-                                    "Details Found"
+                                    "Details Found correctly"
                             ),
                             HttpStatus.OK
                     );
