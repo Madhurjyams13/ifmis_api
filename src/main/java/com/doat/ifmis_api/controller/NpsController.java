@@ -20,18 +20,16 @@ import java.util.HashMap;
 @RequestMapping("nps")
 public class NpsController {
 
-    private final CommonService service;
-
-    private final NpsService npsService;
-
     private static final Logger logger = LogManager.getLogger(NpsController.class);
+    private final CommonService service;
+    private final NpsService npsService;
 
     @PostMapping("getEmpDetails")
     public ResponseEntity<HashMap<String, Object>> getEmpDetails(@RequestBody NpsModel request) {
 
         logger.info("/nps/getEmpDetails == ppan Received == {}", request.ppan());
 
-        if(request.ppan()==null || request.ppan().isEmpty()) return new ResponseEntity<>
+        if (request.ppan() == null || request.ppan().isEmpty()) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -40,7 +38,7 @@ public class NpsController {
                         ),
                         HttpStatus.OK
                 );
-        else if (npsService.getEmpDetails(request.ppan())==null) return new ResponseEntity<>
+        else if (npsService.getEmpDetails(request.ppan()) == null) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -49,7 +47,8 @@ public class NpsController {
                         ),
                         HttpStatus.OK
                 );
-        else return new ResponseEntity<>
+        else
+            return new ResponseEntity<>
                     (
                             service.getResponseEntity(
                                     "OK",
@@ -66,7 +65,7 @@ public class NpsController {
 
         logger.info("/nps/getConDetails == ppan Received == {}", request.ppan());
 
-        if(request.ppan()==null || request.ppan().isEmpty()) return new ResponseEntity<>
+        if (request.ppan() == null || request.ppan().isEmpty()) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -76,7 +75,7 @@ public class NpsController {
                         HttpStatus.OK
                 );
 
-        else if (npsService.getConDetails(request.ppan())==null) return new ResponseEntity<>
+        else if (npsService.getConDetails(request.ppan()) == null) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",

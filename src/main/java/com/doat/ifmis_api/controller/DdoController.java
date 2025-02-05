@@ -17,10 +17,9 @@ import java.util.HashMap;
 @RequestMapping("ddo")
 public class DdoController {
 
+    private static final Logger logger = LogManager.getLogger(DdoController.class);
     private final DdoService ddoService;
     private final CommonService service;
-
-    private static final Logger logger = LogManager.getLogger(DdoController.class);
 
     @GetMapping("test")
     public String ddoTest() {
@@ -31,7 +30,7 @@ public class DdoController {
     @PostMapping("getDetails")
     public ResponseEntity<HashMap<String, Object>> getDdoDetails(@RequestBody DdoModel request) {
         logger.info("/ddo/getDetails == ddoCode Received == {}", request.ddoCode());
-        if(request.ddoCode()==null || request.ddoCode().isEmpty()) return new ResponseEntity<>
+        if (request.ddoCode() == null || request.ddoCode().isEmpty()) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -40,7 +39,7 @@ public class DdoController {
                         ),
                         HttpStatus.OK
                 );
-        else if (ddoService.getDdoDetails(request.ddoCode())==null) return new ResponseEntity<>
+        else if (ddoService.getDdoDetails(request.ddoCode()) == null) return new ResponseEntity<>
                 (
                         service.getResponseEntity(
                                 "OK",
@@ -50,14 +49,14 @@ public class DdoController {
                         HttpStatus.OK
                 );
         else return new ResponseEntity<>
-            (
-                    service.getResponseEntity(
-                            "OK",
-                            ddoService.getDdoDetails(request.ddoCode()),
-                            "Details Found"
-                    ),
-                    HttpStatus.OK
-            );
+                    (
+                            service.getResponseEntity(
+                                    "OK",
+                                    ddoService.getDdoDetails(request.ddoCode()),
+                                    "Details Found"
+                            ),
+                            HttpStatus.OK
+                    );
     }
 
 }

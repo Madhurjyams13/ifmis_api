@@ -37,8 +37,8 @@ public class KeyGenerator implements ApplicationRunner {
             // Ensure directory exists
             Path directory = path.getParent();
 
-            if(!Files.exists(directory)) {
-                logger.warn("SecureApi Directory {} Doesn't exists -- Creating Directory",System.getProperty(BASE_LOC_NAME));
+            if (!Files.exists(directory)) {
+                logger.warn("SecureApi Directory {} Doesn't exists -- Creating Directory", System.getProperty(BASE_LOC_NAME));
 
                 Files.createDirectories(directory);
 
@@ -50,12 +50,9 @@ public class KeyGenerator implements ApplicationRunner {
                 }
 
                 logger.info("Application starting with Newly created secretKey");
-            }
-
-            else
-            {
+            } else {
                 if (!Files.exists(path)) {
-                    logger.warn("Directory {} Exists - Secret File Doesn't -- Creating key File",System.getProperty(BASE_LOC_NAME));
+                    logger.warn("Directory {} Exists - Secret File Doesn't -- Creating key File", System.getProperty(BASE_LOC_NAME));
 
                     try (PrintWriter writer = new PrintWriter(KEY_FILE_PATH)) {
                         writer.write(secretKey);
@@ -63,9 +60,7 @@ public class KeyGenerator implements ApplicationRunner {
 
                     logger.info("Application starting with newly created secretKey");
 
-                }
-
-                else {
+                } else {
                     logger.info("Application starting with previously created secretKey");
 
                 }
