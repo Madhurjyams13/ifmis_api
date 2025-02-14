@@ -1,6 +1,7 @@
 package com.doat.ifmis_api.model;
 
 public record AdministrativeApproval(
+        String uniqueId,
         String deptCode,
         String aaType,
         String scheme,
@@ -14,7 +15,9 @@ public record AdministrativeApproval(
         Double amount,
         Double headAmount,
         String desc,
-        String filePath
+        String filePath,
+        String ddoCode,
+        String ddoName
 ) {
 
     public static AdministrativeApproval.Builder builder() {
@@ -22,6 +25,7 @@ public record AdministrativeApproval(
     }
 
     public static class Builder {
+        private String uniqueId;
         private String deptCode;
         private String aaType;
         private String scheme;
@@ -36,6 +40,13 @@ public record AdministrativeApproval(
         private Double headAmount;
         private String desc;
         private String filePath;
+        private String ddoCode;
+        private String ddoName;
+
+        public AdministrativeApproval.Builder uniqueId(String uniqueId) {
+            this.uniqueId = uniqueId;
+            return this;
+        }
 
         public AdministrativeApproval.Builder deptCode(String deptCode) {
             this.deptCode = deptCode;
@@ -107,8 +118,19 @@ public record AdministrativeApproval(
             return this;
         }
 
+        public AdministrativeApproval.Builder ddoCode(String ddoCode) {
+            this.ddoCode = ddoCode;
+            return this;
+        }
+
+        public AdministrativeApproval.Builder ddoName(String ddoName) {
+            this.ddoName = ddoName;
+            return this;
+        }
+
         public AdministrativeApproval build() {
             return new AdministrativeApproval(
+                    uniqueId,
                     deptCode,
                     aaType,
                     scheme,
@@ -122,9 +144,10 @@ public record AdministrativeApproval(
                     amount,
                     headAmount,
                     desc,
-                    filePath
+                    filePath,
+                    ddoCode,
+                    ddoName
             );
         }
     }
-
 }

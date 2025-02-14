@@ -166,7 +166,9 @@ public final class QueryConstants {
             """;
 
     public static final String AA_DETAILS_QUERY = """
-                SELECT dep.hierarchy_Code,
+                SELECT 
+                CONCAT(aa.approval_id,'H',ah.id),
+                dep.hierarchy_Code,
                 case\s
                 	when aa.parent_id IS NULL\s
                 		then 'Original'
@@ -200,7 +202,9 @@ public final class QueryConstants {
                 aa.amount,
                 ah.amount head_amount,
                 aa.project_aim,\s
-                'filePath'
+                'filePath',
+                ddo.hierarchy_Code,
+                ofc.office_Name
                 #,h.*
                 #aa.*\s
                 FROM probityfinancials.administrative_approval aa
@@ -215,9 +219,17 @@ public final class QueryConstants {
                 	ON h.head_id = pchm.head_id
                 LEFT JOIN probityfinancials.plan_category pc\s
                 	ON pchm.pc_id = pc.pc_id
+                LEFT JOIN probityfinancials.administrative_approval_ddo_mapping map
+                	ON aa.approval_id = map.approval_id
+                JOIN pfmaster.hierarchy_setup ddo
+                	ON map.mapped_ddo_id = ddo.hierarchy_Id
+                	AND ddo.category = 'S'
+                JOIN pfmaster.hierarchy_setup ofc
+                	ON ddo.parent_hierarchy = ofc.hierarchy_Id
+                	AND ofc.category = 'O'
                 WHERE
                 dep.hierarchy_Code = :deptCode
-                AND DATE(aa.approved_on) BETWEEN :fromDate AND :toDate
+                AND DATE(aa.issued_on) BETWEEN :fromDate AND :toDate
                 AND CONCAT(SUBSTR(aa.fin_year,1,5),'20',SUBSTR(aa.fin_year,6,8)) = :fy
             """;
 
