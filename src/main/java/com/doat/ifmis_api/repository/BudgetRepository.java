@@ -22,7 +22,7 @@ public class BudgetRepository {
 
     public List<AdministrativeApproval> getAADetails(String deptCode, String fy, String fromDate, String toDate) {
 
-        String queryString = queryService.getAADetaisls(deptCode,fy,fromDate,toDate);
+        String queryString = queryService.getAADetaisls(deptCode, fy, fromDate, toDate);
         Query query = em.createNativeQuery(queryString);
 
         query.setParameter("deptCode", deptCode);
