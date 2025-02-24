@@ -1,0 +1,41 @@
+services:
+  ifmis-api:
+    container_name: ifmis_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    volumes:
+      # Mount logs directory as a volume for persistence
+      - ifmis_api_logs:/app/logs
+      # Mount secure directory for any sensitive data
+      - ifmis_api_secure:/home/doat/.secureapi
+    # Set reasonable resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    # Ensure the container restarts if it crashes
+    restart: unless-stopped
+    # Add healthcheck to monitor application status
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - ifmis-network
+
+networks:
+  ifmis-network:
+    driver: bridge
+
+volumes:
+  ifmis_api_logs:
+    name: ifmis_logs_volume
+  ifmis_api_secure:
+    name: ifmis_secure_volume

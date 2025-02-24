@@ -1,6 +1,7 @@
 package com.doat.ifmis_api.controller;
 
 import com.doat.ifmis_api.model.AdministrativeApproval;
+import com.doat.ifmis_api.model.BudgetAllocation;
 import com.doat.ifmis_api.service.BudgetService;
 import com.doat.ifmis_api.service.CommonService;
 import com.doat.ifmis_api.service.ValidationService;
@@ -32,7 +33,6 @@ public class BudgetController {
 
         logger.info("trying to get AA details");
 
-
         String deptCode = aa.deptCode() == null ? null : aa.deptCode();
         String fromDate = aa.fromDate() == null ? null : aa.fromDate();
         String toDate = aa.toDate() == null ? null : aa.toDate();
@@ -53,27 +53,39 @@ public class BudgetController {
                 if (validationService.validateDateFormat(toDate)) {
                     if (validationService.validateFinYearFormat(finYear)) {
                         if (!validationService.validateFromAndToDate(fromDate, toDate)) {
-                            List<AdministrativeApproval> aaList = budgetService.getAADetails(deptCode, finYear, fromDate, toDate);
+                            if (validationService.validateDatesWithinFinancialYear(fromDate, toDate, finYear)) {
+                                List<AdministrativeApproval> aaList = budgetService.getAADetails(deptCode, finYear, fromDate, toDate);
 
-                            if (aaList.isEmpty())
+                                if (aaList.isEmpty())
+                                    return new ResponseEntity<>
+                                            (
+                                                    service.getResponseEntity(
+                                                            "OK",
+                                                            budgetService.getAADetails(deptCode, finYear, fromDate, toDate),
+                                                            "AA Details Not found"
+                                                    ),
+                                                    HttpStatus.OK
+                                            );
                                 return new ResponseEntity<>
                                         (
                                                 service.getResponseEntity(
                                                         "OK",
                                                         budgetService.getAADetails(deptCode, finYear, fromDate, toDate),
-                                                        "AA Details Not found"
+                                                        "AA Details found"
                                                 ),
                                                 HttpStatus.OK
                                         );
-                            return new ResponseEntity<>
-                                    (
-                                            service.getResponseEntity(
-                                                    "OK",
-                                                    budgetService.getAADetails(deptCode, finYear, fromDate, toDate),
-                                                    "AA Details found"
-                                            ),
-                                            HttpStatus.OK
-                                    );
+                            } else {
+                                return new ResponseEntity<>
+                                        (
+                                                service.getResponseEntity(
+                                                        "Error",
+                                                        null,
+                                                        "From and To Dates need to fall inside financial year range."
+                                                ),
+                                                HttpStatus.BAD_REQUEST
+                                        );
+                            }
                         } else {
                             return new ResponseEntity<>
                                     (
@@ -119,5 +131,51 @@ public class BudgetController {
                         );
             }
         }
+    }
+
+    @PostMapping("getBADetails")
+    public ResponseEntity<HashMap<String, Object>> getBADetails(@RequestBody BudgetAllocation ba) {
+
+        logger.info("trying to get BA details");
+
+        String finYear = ba.finYear() == null ? null : ba.finYear();
+        String deptCode = ba.deptCode() == null ? null : ba.deptCode();
+        String grant = ba.grantNo() == null ? null : ba.grantNo();
+        String hoa = ba.head() == null ? null : ba.head();
+
+        if (finYear == null && deptCode == null && grant == null) {
+            return new ResponseEntity<>
+                    (
+                            service.getResponseEntity(
+                                    "Error",
+                                    null,
+                                    "Financial year, Department Code and Grant Number must be provided"
+                            ),
+                            HttpStatus.BAD_REQUEST
+                    );
+        } else {
+            if (hoa == null) {
+                return new ResponseEntity<>
+                        (
+                                service.getResponseEntity(
+                                        "OK",
+                                        null,
+                                        "Data found without HOA"
+                                ),
+                                HttpStatus.OK
+                        );
+            } else {
+                return new ResponseEntity<>
+                        (
+                                service.getResponseEntity(
+                                        "OK",
+                                        budgetService.getBADetails(deptCode, finYear, grant, hoa),
+                                        "AA Details found"
+                                ),
+                                HttpStatus.OK
+                        );
+            }
+        }
+
     }
 }
