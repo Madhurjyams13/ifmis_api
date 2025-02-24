@@ -362,7 +362,7 @@ public final class QueryConstants {
                 	ON m.scheme = pc.abbreviation
                 WHERE\s
                 m.year = :finYear
-                and m.dept_code = :grant
+                and m.grant_no = :grant
             
                 LIMIT 100
             """;

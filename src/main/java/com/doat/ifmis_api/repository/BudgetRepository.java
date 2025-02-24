@@ -47,7 +47,7 @@ public class BudgetRepository {
 
 //        query.setParameter("deptCode", deptCode);
         query.setParameter("finYear", fy);
-//        query.setParameter("grant", grant);
+        query.setParameter("grant", grant);
 //        query.setParameter("hoa", HOA);
 
         List<Object[]> baObjectList = query.getResultList();
