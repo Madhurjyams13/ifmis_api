@@ -29,7 +29,12 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public String getAADetaisls(String deptCode, String fy, String fromDate, String toDate) {
+    public String getAADetails(String deptCode, String fy, String fromDate, String toDate) {
         return QueryConstants.AA_DETAILS_QUERY;
+    }
+
+    @Override
+    public String getBADetails(String deptCode, String fy, String grant, String HOA) {
+        return QueryConstants.BA_DETAILS_QUERY;
     }
 }

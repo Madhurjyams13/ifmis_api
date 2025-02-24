@@ -82,13 +82,13 @@ public class NpsRepository {
                 .dto(data[9].toString())
                 .ddo(data[10].toString())
                 .ira_status(data[11] == null ? "" : data[11].toString())
-                .first_capture(data[12] == null ? "" : data[12].toString())
-                .last_capture(data[13] == null ? "" : data[13].toString())
-                .total_capture(data[14] == null ? "" : data[14].toString())
-                .first_upload(data[15] == null ? "" : data[15].toString())
-                .last_upload(data[16] == null ? "" : data[16].toString())
-                .total_upload(data[17] == null ? "" : data[17].toString())
-                .treasuryName(data[18].toString())
+                .treasuryName(data[12].toString())
+                .first_capture(data[13] == null ? "" : data[13].toString())
+                .last_capture(data[14] == null ? "" : data[14].toString())
+                .total_capture(data[15] == null ? "" : data[15].toString())
+                .first_upload(data[16] == null ? "" : data[16].toString())
+                .last_upload(data[17] == null ? "" : data[17].toString())
+                .total_upload(data[18] == null ? "" : data[18].toString())
                 .build();
     }
 

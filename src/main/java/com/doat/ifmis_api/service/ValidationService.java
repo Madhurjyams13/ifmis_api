@@ -7,4 +7,6 @@ public interface ValidationService {
     Boolean validateFinYearFormat(String financialYear);
 
     Boolean validateFromAndToDate(String fromDateStr, String toDateStr);
+
+    Boolean validateDatesWithinFinancialYear(String fromDateStr, String toDateStr, String financialYear);
 }
