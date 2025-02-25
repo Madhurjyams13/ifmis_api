@@ -1,6 +1,7 @@
 services:
   ifmis-api:
     container_name: ifmis_api
+    image: ifmis-api:latest
     build:
       context: .
       dockerfile: Dockerfile

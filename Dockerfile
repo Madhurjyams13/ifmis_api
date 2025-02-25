@@ -29,8 +29,6 @@ WORKDIR /app
 
 # Copy only the built JAR and start up sh files from the builder stage
 COPY --from=builder /build/target/ifmis_api.jar ./app.jar
-COPY --chown=doat:doat entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
 
 # Switch to non-root user
 USER doat
@@ -43,4 +41,9 @@ EXPOSE 8081
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Start entrypoint script to start the application
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD mkdir -p "$USER_HOME"/.secureapi && \
+chmod 700 "$USER_HOME"/.secureapi && \
+exec java -jar app.jar \
+    --logging.file.path=/app/logs \
+    --logging.file.name=/app/logs/ifmis_api.log \
+    -Duser.home="$USER_HOME"
