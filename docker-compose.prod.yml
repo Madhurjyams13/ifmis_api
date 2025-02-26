@@ -3,7 +3,7 @@ services:
     container_name: ifmis_api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "8081:8081"
     volumes:
